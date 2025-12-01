@@ -14,13 +14,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import argparse
 import sys
+
 from doi2bib3.utils import cli_doi2bib3
 
 
 def main():
-    import sys
     cli_doi2bib3(sys.argv[1:])
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
