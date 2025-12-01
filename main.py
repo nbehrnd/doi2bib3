@@ -21,5 +21,7 @@ from doi2bib3.utils import cli_doi2bib3
 
 def main():
     cli_doi2bib3(sys.argv[1:])
+
+
 if __name__ == "__main__":
     main()

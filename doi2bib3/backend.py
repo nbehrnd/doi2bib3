@@ -76,7 +76,7 @@ def get_bibtex_from_doi(doi: str, timeout: int = 15) -> str:
 
     headers = {
         "Accept": "application/x-bibtex; charset=utf-8",
-        "User-Agent": "doi2bib-python/1.0"
+        "User-Agent": "doi2bib-python/1.0",
     }
     # try doi.org first
     url = f"https://doi.org/{doi}"
@@ -102,7 +102,9 @@ def get_bibtex_from_doi(doi: str, timeout: int = 15) -> str:
             enc2 = resp2.apparent_encoding or resp2.encoding or "utf-8"
             return resp2.content.decode(enc2, errors="replace")
 
-    raise DOIError(f"Failed to fetch DOI {doi}: doi.org HTTP {resp.status_code}, crossref HTTP {resp2.status_code}")
+    raise DOIError(
+        f"Failed to fetch DOI {doi}: doi.org HTTP {resp.status_code}, crossref HTTP {resp2.status_code}"
+    )
 
 
 def _extract_arxiv_id(s: str) -> Optional[str]:
@@ -201,9 +203,7 @@ def crossref_search_for_doi(query: str, timeout: int = 15) -> Optional[str]:
     if not q:
         return None
 
-    headers = {
-        "User-Agent": "doi2bib-python/1.0"
-    }
+    headers = {"User-Agent": "doi2bib-python/1.0"}
 
     # If the query is a URL, try to extract a DOI-like substring from the path
     # or from the publisher page HTML (meta tags, canonical/doi links). This
@@ -249,7 +249,7 @@ def crossref_search_for_doi(query: str, timeout: int = 15) -> Optional[str]:
                 parsed_q = urlparse(q)
                 q_netloc = parsed_q.netloc.lower()
                 for it in items:
-                    it_url = (it.get("URL") or "")
+                    it_url = it.get("URL") or ""
                     if it_url and q_netloc in it_url.lower():
                         if it.get("DOI"):
                             return it.get("DOI")
@@ -299,7 +299,11 @@ def _extract_doi_from_url(url: str, timeout: int = 10) -> Optional[str]:
         return None
 
     # meta tags: citation_doi is common (used by many publishers)
-    m = re.search(r'<meta[^>]+name=["\']citation_doi["\'][^>]*content=["\']([^"\']+)["\']', html, flags=re.IGNORECASE)
+    m = re.search(
+        r'<meta[^>]+name=["\']citation_doi["\'][^>]*content=["\']([^"\']+)["\']',
+        html,
+        flags=re.IGNORECASE,
+    )
     if m:
         try:
             return normalize_doi(m.group(1).strip())
@@ -307,7 +311,11 @@ def _extract_doi_from_url(url: str, timeout: int = 10) -> Optional[str]:
             pass
 
     # dc.identifier or DCTERMS.identifier
-    m = re.search(r'<meta[^>]+name=["\'](?:dc\.|DCTERMS\.)?identifier["\'][^>]*content=["\']([^"\']+)["\']', html, flags=re.IGNORECASE)
+    m = re.search(
+        r'<meta[^>]+name=["\'](?:dc\.|DCTERMS\.)?identifier["\'][^>]*content=["\']([^"\']+)["\']',
+        html,
+        flags=re.IGNORECASE,
+    )
     if m:
         val = m.group(1).strip()
         # sometimes comes as 'doi:10.xxx' or full URL
@@ -326,7 +334,11 @@ def _extract_doi_from_url(url: str, timeout: int = 10) -> Optional[str]:
             pass
 
     # link tags and explicit DOI hrefs
-    m = re.search(r'href=["\']https?://(?:dx\.)?doi\.org/([^"\']+)["\']', html, flags=re.IGNORECASE)
+    m = re.search(
+        r'href=["\']https?://(?:dx\.)?doi\.org/([^"\']+)["\']',
+        html,
+        flags=re.IGNORECASE,
+    )
     if m:
         try:
             return normalize_doi(unquote(m.group(1).strip()))
@@ -334,7 +346,11 @@ def _extract_doi_from_url(url: str, timeout: int = 10) -> Optional[str]:
             pass
 
     # Any /10.xxx/ pattern in href/src attributes
-    m = re.search(r'(?:href|src)=["\'][^"\']*(10\.\d{4,9}/[^"\']+)["\']', html, flags=re.IGNORECASE)
+    m = re.search(
+        r'(?:href|src)=["\'][^"\']*(10\.\d{4,9}/[^"\']+)["\']',
+        html,
+        flags=re.IGNORECASE,
+    )
     if m:
         try:
             return normalize_doi(m.group(1).strip())

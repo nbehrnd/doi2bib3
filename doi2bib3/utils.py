@@ -14,6 +14,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 """Utilities for bib normalization and IO inside the package."""
+
 import os
 import re
 import urllib.parse
@@ -32,7 +33,7 @@ SPECIAL_CHARS = {
     "\u00fc": '\\"{u}',
     "\u00d6": '\\"{O}',
     "\u00c4": '\\"{A}',
-    "\u00dc": '\\"{U}'
+    "\u00dc": '\\"{U}',
 }
 
 
@@ -67,12 +68,13 @@ def normalize_bibtex(bib_str: str) -> str:
         are removed from each component. If the generated key already exists
         in `seen`, a, b, c... suffixes are appended to disambiguate.
         """
+
         def _clean(s, lower=True):
             if not s:
                 return ""
             s = s.strip()
             # remove surrounding braces/quotes
-            s = re.sub(r'^[{\"\']+|[}\"\']+$', "", s)
+            s = re.sub(r"^[{\"\']+|[}\"\']+$", "", s)
             if lower:
                 s = s.lower()
                 # keep letters, digits and hyphens
@@ -196,7 +198,9 @@ def cli_doi2bib3(argv=None):
     p = argparse.ArgumentParser(
         description="Fetch BibTeX by DOI, DOI URL, arXiv id or arXiv URL"
     )
-    p.add_argument("identifier", nargs="?", help="DOI, DOI URL, arXiv id/URL, or publisher URL")
+    p.add_argument(
+        "identifier", nargs="?", help="DOI, DOI URL, arXiv id/URL, or publisher URL"
+    )
     p.add_argument("-o", "--out", help="Write .bib file to this path")
 
     args = p.parse_args(argv)
