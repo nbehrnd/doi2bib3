@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # SPDX-License-Identifier: GPL-3.0-only
 
-"""External pytest checks by pytest on datawarrior_clustersort.py.
+"""External pytest checks by pytest.
 
 Checks in this file probe the application as a whole from the outside
 (blackbox tests) marked by `blackbox`.  It is complemented by checks
@@ -14,17 +14,13 @@ import sys
 
 import pytest
 
-PRG = "scripts/doi2bib3"
+PRG = "src.doi2bib3.main"
 
 
 @pytest.mark.blackbox
 def test_script_exists() -> None:
     """Check for the script's presence."""
-    assert os.path.isfile(PRG), f"script {PRG} was not found"
-
-
-import subprocess
-import pytest
+    assert os.path.isfile("src/doi2bib3/main.py"), f"script {PRG} was not found"
 
 
 @pytest.mark.blackbox
@@ -91,7 +87,7 @@ import pytest
 )
 def test_article_output(capfd, input_value, expected_output) -> None:
     """Check .bib generation at level of the CLI."""
-    subprocess.run(f"python {PRG} {input_value}", shell=True, check=True)
+    subprocess.run(f"python -m {PRG} {input_value}", shell=True, check=True)
     out, err = capfd.readouterr()
     assert expected_output.splitlines() == out.splitlines()
 
@@ -125,6 +121,6 @@ def test_article_output(capfd, input_value, expected_output) -> None:
 )
 def test_article_fuzzy_title(capfd, input_value, expected_output) -> None:
     """Check .bib generation at level of the CLI."""
-    subprocess.run(f"python {PRG} {input_value}", shell=True, check=True)
+    subprocess.run(f"python -m {PRG} {input_value}", shell=True, check=True)
     out, err = capfd.readouterr()
     assert expected_output == out

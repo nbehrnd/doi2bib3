@@ -8,10 +8,12 @@ When executed directly from the repository tree (e.g. ``python3 scripts/doi2bib3
 prefer the repository copy of the package over any system-installed one by
 inserting the repository root into ``sys.path`` before importing.
 """
+
 import os
 import sys
 
 from src.doi2bib3.utils import cli_doi2bib3
+
 # Ensure local repo package is preferred when running the script from the
 # repository root (so testing modified code is straightforward).
 try:
@@ -22,12 +24,10 @@ try:
 except Exception:
     pass
 
-# from doi2bib3.utils import cli_doi2bib3
-
 
 def main():
     cli_doi2bib3(sys.argv[1:])
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
