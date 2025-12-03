@@ -11,6 +11,7 @@ inserting the repository root into ``sys.path`` before importing.
 import os
 import sys
 
+from src.doi2bib3.utils import cli_doi2bib3
 # Ensure local repo package is preferred when running the script from the
 # repository root (so testing modified code is straightforward).
 try:
@@ -21,7 +22,7 @@ try:
 except Exception:
     pass
 
-from doi2bib3.utils import cli_doi2bib3
+# from doi2bib3.utils import cli_doi2bib3
 
 
 def main():

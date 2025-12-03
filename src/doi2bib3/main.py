@@ -16,7 +16,7 @@
 
 import argparse
 import sys
-from doi2bib3.utils import cli_doi2bib3
+from src.doi2bib3.utils import cli_doi2bib3
 
 
 def main():
