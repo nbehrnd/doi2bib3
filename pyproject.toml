@@ -16,31 +16,26 @@ keywords = ["doi", "bibtex", "arxiv"]
 classifiers = [
   "Operating System :: OS Independent",
 ]
-
 dependencies = [
   "requests",
   "bibtexparser",
 ]
-
 [project.optional-dependencies]
 dev = [
     "build>=1.2.2.post1",
     "pytest>=9.0.1",
     "tox>=4.32.0",
 ]
-
-
 [project.urls]
 "Homepage" = "https://github.com/archisman-panigrahi/doi2bib3"
 "Source" = "https://github.com/archisman-panigrahi/doi2bib3"
 "Bug Tracker" = "https://github.com/archisman-panigrahi/doi2bib3/issues"
-
 [project.scripts]
 doi2bib3 = "doi2bib3.utils:cli_doi2bib3"
-
 [tool.setuptools.packages.find]
+where = ["src"]
 include = ["doi2bib3*"]
-
+namespaces = false
 [tool.pytest.ini_options]
 pythonpath = "src"
 testpaths = "tests"
