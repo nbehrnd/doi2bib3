@@ -1,16 +1,16 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 # SPDX-License-Identifier: GPL-3.0-only
 
-"""External pytest checks by pytest.
+"""
+External pytest checks by pytest.
 
 Checks in this file probe the application as a whole from the outside
 (blackbox tests) marked by `blackbox`.  It is complemented by checks
-defined in file `test_with_imports.py` labelled by `imported`."""
+defined in file `test_with_imports.py` labelled by `imported`.
+"""
 
-import os
 import subprocess
 import sys
+from pathlib import Path
 
 import pytest
 
@@ -20,7 +20,7 @@ PRG = "src.doi2bib3.main"
 @pytest.mark.blackbox
 def test_script_exists() -> None:
     """Check for the script's presence."""
-    assert os.path.isfile("src/doi2bib3/main.py"), f"script {PRG} was not found"
+    assert Path("src/doi2bib3/main.py").is_file(), f"script {PRG} was not found"
 
 
 @pytest.mark.blackbox
@@ -88,7 +88,7 @@ def test_script_exists() -> None:
 def test_article_output(capfd, input_value, expected_output) -> None:
     """Check .bib generation at level of the CLI."""
     subprocess.run(f"python -m {PRG} {input_value}", shell=True, check=True)
-    out, err = capfd.readouterr()
+    out, _ = capfd.readouterr()
     assert expected_output.splitlines() == out.splitlines()
 
 
@@ -122,5 +122,5 @@ def test_article_output(capfd, input_value, expected_output) -> None:
 def test_article_fuzzy_title(capfd, input_value, expected_output) -> None:
     """Check .bib generation at level of the CLI."""
     subprocess.run(f"python -m {PRG} {input_value}", shell=True, check=True)
-    out, err = capfd.readouterr()
+    out, _ = capfd.readouterr()
     assert expected_output == out
